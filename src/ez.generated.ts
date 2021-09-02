@@ -25,9 +25,28 @@ export type Scalars = {
   Float: number;
 };
 
+export type Address = {
+  __typename?: "Address";
+  addressOne: Scalars["String"];
+};
+
+export type Customer = {
+  __typename?: "Customer";
+  id: Scalars["String"];
+  shippingAddress: Array<Maybe<Address>>;
+};
+
+export type User = {
+  __typename?: "User";
+  id: Scalars["String"];
+  name: Scalars["String"];
+  customers: Array<Maybe<Customer>>;
+};
+
 export type Query = {
   __typename?: "Query";
   hello: Scalars["String"];
+  getCurrentUser: User;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -130,16 +149,57 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Query: ResolverTypeWrapper<{}>;
+  Address: ResolverTypeWrapper<Address>;
   String: ResolverTypeWrapper<Scalars["String"]>;
+  Customer: ResolverTypeWrapper<Customer>;
+  User: ResolverTypeWrapper<User>;
+  Query: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Query: {};
+  Address: Address;
   String: Scalars["String"];
+  Customer: Customer;
+  User: User;
+  Query: {};
   Boolean: Scalars["Boolean"];
+};
+
+export type AddressResolvers<
+  ContextType = EZContext,
+  ParentType extends ResolversParentTypes["Address"] = ResolversParentTypes["Address"]
+> = {
+  addressOne?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CustomerResolvers<
+  ContextType = EZContext,
+  ParentType extends ResolversParentTypes["Customer"] = ResolversParentTypes["Customer"]
+> = {
+  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  shippingAddress?: Resolver<
+    Array<Maybe<ResolversTypes["Address"]>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserResolvers<
+  ContextType = EZContext,
+  ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
+> = {
+  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  customers?: Resolver<
+    Array<Maybe<ResolversTypes["Customer"]>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<
@@ -147,9 +207,13 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
   hello?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  getCurrentUser?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = EZContext> = {
+  Address?: AddressResolvers<ContextType>;
+  Customer?: CustomerResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 

@@ -2,6 +2,22 @@ schema {
   query: Query
 }
 
+type Address {
+  addressOne: String!
+}
+
+type Customer {
+  id: String!
+  shippingAddress: [Address]!
+}
+
+type User {
+  id: String!
+  name: String!
+  customers: [Customer]!
+}
+
 type Query {
   hello: String!
+  getCurrentUser: User!
 }

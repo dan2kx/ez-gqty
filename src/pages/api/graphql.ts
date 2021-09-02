@@ -11,19 +11,42 @@ const { buildApp } = CreateApp({
         outputSchema: true,
       }),
       ezGraphiQLIDE({
-        defaultQuery: "query { hello }",
+        defaultQuery: "query { hello getCurrentUser }",
       }),
       ezSchema({
         schema: {
           typeDefs: gql`
+            type Address {
+              addressOne: String!
+            }
+
+            type Customer {
+              id: String!
+              shippingAddress: [Address]!
+            }
+
+            type User {
+              id: String!
+              name: String!
+              customers: [Customer]!
+            }
+
             type Query {
               hello: String!
+              getCurrentUser: User!
             }
           `,
           resolvers: {
             Query: {
               hello() {
                 return "Hello World";
+              },
+              getCurrentUser() {
+                return {
+                  id: "1",
+                  name: "Fred",
+                  customers: [],
+                };
               },
             },
           },
